@@ -7,6 +7,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "tasks")
+
 public class Task {
 
     @Id
@@ -29,7 +30,10 @@ public class Task {
             joinColumns = @JoinColumn(name = "task_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private List<User> assignedUsers;
+    private List<User> users;
+
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
+    private List<Note> notes;
 
     public Long getId() {
         return id;
@@ -71,12 +75,20 @@ public class Task {
         this.project = project;
     }
 
-    public List<User> getAssignedUsers() {
-        return assignedUsers;
+    public List<User> getUsers() {
+        return users;
     }
 
-    public void setAssignedUsers(List<User> assignedUsers) {
-        this.assignedUsers = assignedUsers;
+    public void setUsers(List<User> users) {
+        this.users = users;
+    }
+
+    public List<Note> getNotes() {
+        return notes;
+    }
+
+    public void setNotes(List<Note> notes) {
+        this.notes = notes;
     }
 }
 
