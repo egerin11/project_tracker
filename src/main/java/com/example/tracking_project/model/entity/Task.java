@@ -4,10 +4,9 @@ import com.example.tracking_project.model.enums.TaskStatus;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table(name = "tasks")
-
 public class Task {
 
     @Id
@@ -26,11 +25,11 @@ public class Task {
 
     @ManyToMany
     @JoinTable(
-            name = "task_user",
+            name = "task_users",
             joinColumns = @JoinColumn(name = "task_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id")
     )
-    private List<User> users;
+    private Set<User> assignedUsers;
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL)
     private List<Note> notes;
@@ -75,12 +74,12 @@ public class Task {
         this.project = project;
     }
 
-    public List<User> getUsers() {
-        return users;
+    public Set<User> getAssignedUsers() {
+        return assignedUsers;
     }
 
-    public void setUsers(List<User> users) {
-        this.users = users;
+    public void setAssignedUsers(Set<User> assignedUsers) {
+        this.assignedUsers = assignedUsers;
     }
 
     public List<Note> getNotes() {

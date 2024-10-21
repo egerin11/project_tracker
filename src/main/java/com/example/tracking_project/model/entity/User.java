@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.*;
 
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -19,16 +20,24 @@ public class User {
 
     private String username;
     private String email;
+    private String password;
+
+
 
     @ManyToMany(mappedBy = "users")
     private List<Project> projects;
 
     @ManyToMany(mappedBy = "assignedUsers")
-    private List<Task> tasks;
-
+    private Set<Task> tasks;
     @OneToMany(mappedBy = "author")
     private List<Note> notes;
+    public String getPassword() {
+        return password;
+    }
 
+    public void setPassword(String password) {
+        this.password = password;
+    }
     public List<Note> getNotes() {
         return notes;
     }
@@ -69,11 +78,11 @@ public class User {
         this.projects = projects;
     }
 
-    public List<Task> getTasks() {
+    public Set<Task> getTasks() {
         return tasks;
     }
 
-    public void setTasks(List<Task> tasks) {
+    public void setTasks(Set<Task> tasks) {
         this.tasks = tasks;
     }
 }
