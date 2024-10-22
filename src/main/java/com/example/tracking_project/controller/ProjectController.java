@@ -6,10 +6,10 @@ import com.example.tracking_project.model.dto.request.UserRequest;
 import com.example.tracking_project.model.dto.response.ProjectResponse;
 import com.example.tracking_project.model.dto.response.ProjectUserResponse;
 import com.example.tracking_project.service.ProjectService;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import lombok.Getter;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/projects")
@@ -29,5 +29,14 @@ public class ProjectController {
     @PostMapping("/add-user")
     public ProjectUserResponse addUserToProject(@RequestBody ProjectUserRequest projectUserRequest) {
         return projectService.addUserToProject(projectUserRequest);
+    }
+    @GetMapping
+    public List<ProjectResponse> getAllProjects() {
+        return projectService.getProjects();
+    }
+    @GetMapping("/{projectId}")
+    public ProjectResponse getProjectById(@PathVariable Long projectId) {
+        return projectService.getProjectById(projectId);
+
     }
 }

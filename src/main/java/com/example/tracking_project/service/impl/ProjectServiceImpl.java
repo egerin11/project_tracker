@@ -13,6 +13,8 @@ import com.example.tracking_project.service.ProjectService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class ProjectServiceImpl implements ProjectService {
     private final ProjectRepository projectRepository;
@@ -42,5 +44,14 @@ public class ProjectServiceImpl implements ProjectService {
         projectRepository.save(project);
         userRepository.save(user);
         return new ProjectUserResponse(userId, projectId);
+    }
+
+    @Override
+    public List<ProjectResponse> getProjects() {
+        return projectRepository.findAll().stream().map(ProjectMapper::toDto).toList();
+    }
+    @Override
+    public ProjectResponse getProjectById(Long projectId) {
+        return ProjectMapper.toDto(projectRepository.findById(projectId).orElseThrow(() -> new EntityNotFoundException("Project not found")));
     }
 }
