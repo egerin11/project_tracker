@@ -1,0 +1,74 @@
+services:
+  backend:
+    container_name: tracker_back
+    restart: unless-stopped
+    build:
+      context: ./tracking_project_back
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    volumes:
+      - ./pictures:/app/pictures
+    env_file:
+      - config/.env
+    networks:
+      - tracker-app
+
+  frontend:
+    container_name: tracker_front
+    restart: unless-stopped
+    build:
+      context: ./tracker-ui
+      dockerfile: Dockerfile
+#    ports:
+#      - "8080:80"
+    depends_on:
+      - backend
+    networks:
+      - tracker-app
+
+  nginx:
+    image: nginx:latest
+    container_name: tracker_nginx
+    restart: unless-stopped
+    build:
+      context: ./tracker-ui
+      dockerfile: Dockerfile
+    volumes:
+      - ./nginx_logs:/var/log/nginx
+      - nginx_cache:/var/cache/nginx
+    ports:
+      - "80:80"
+#    depends_on:
+#      - backend
+#      - frontend
+    networks:
+      - tracker-app
+
+  db:
+    image: postgres:latest
+    container_name: db_tracker
+    restart: unless-stopped
+    env_file:
+      - config/db.env
+
+    expose:
+      - "5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./infrastructure/db/create_db.sql:/docker-entrypoint-initdb.d/create_db.sql
+    networks:
+      - tracker-app
+
+
+
+volumes:
+  postgres_data:
+  nginx_cache: 
+
+networks:
+  tracker-app:
+    driver: bridge
+

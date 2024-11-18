@@ -1,6 +1,5 @@
 <template>
   <footer>
-<!--    <p>&copy; 2024 Project Manager App</p>-->
   </footer>
 </template>
 
